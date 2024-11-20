@@ -4,14 +4,13 @@ import { supabase } from "@/supabaseClient";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { businesses } from "../helpers/businesses";
-// import Modal from "../ui/modal";
 
 const Home = () => {
 
   const [purchases, setPurchases] = useState([{ id: 1, item: "", value: "" }]);
   const [sales, setSales] = useState({
-    cash: "",
-    dataphone: "",
+    efectivo: "",
+    datafono: "",
     nequi: "",
     daviplata: "",
   });
@@ -36,8 +35,8 @@ const Home = () => {
   const resetFields = () => {
     setPurchases([{ id: 1, item: "", value: "" }]);
     setSales({
-      cash: "",
-      dataphone: "",
+      efectivo: "",
+      datafono: "",
       nequi: "",
       daviplata: "",
     });
@@ -64,11 +63,11 @@ const Home = () => {
       0
     );
     const totalSales =
-      Number(sales.cash || 0) +
-      Number(sales.dataphone || 0) +
+      Number(sales.efectivo || 0) +
+      Number(sales.datafono || 0) +
       Number(sales.nequi || 0) +
       Number(sales.daviplata || 0);
-    const consignation = Number(sales.cash || 0) - totalPurchases;
+    const consignation = Number(sales.efectivo || 0) - totalPurchases;
 
     return { totalPurchases, totalSales, consignation };
   };
@@ -82,12 +81,12 @@ const Home = () => {
       }
 
       const dataToInsert = {
-        store_name: businessName, // Asignar dinámicamente el nombre de la tienda desde la ruta
+        store_name: businessName,
         closing_date: date,
         purchases: purchases,
         total_purchases: totalPurchases,
-        cash_sales: Number(sales.cash || 0),
-        dataphone_sales: Number(sales.dataphone || 0),
+        cash_sales: Number(sales.efectivo || 0),
+        dataphone_sales: Number(sales.datafono || 0),
         nequi_sales: Number(sales.nequi || 0),
         daviplata_sales: Number(sales.daviplata || 0),
         total_sales: totalSales,
@@ -112,7 +111,6 @@ const Home = () => {
         {business ? `Cigarrería: ${businessName}` : "Cargando..."}
       </h1>
 
-      {/* Date */}
       <div className="mb-6">
         <label htmlFor="date" className="block text-blue-300 font-medium mb-2">
           Fecha
@@ -126,7 +124,6 @@ const Home = () => {
         />
       </div>
 
-      {/* Purchases */}
       <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-6">
         <h2 className="text-2xl font-semibold text-blue-300 mb-4">Compras</h2>
         {purchases.map((purchase) => (
@@ -166,15 +163,14 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Ventas */}
       <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-6">
         <h2 className="text-2xl font-semibold text-blue-300 mb-4">Ventas</h2>
         {["efectivo", "datafono", "nequi", "daviplata"].map((type) => (
           <div key={type} className="mb-4">
             <label className="block text-blue-300 font-medium mb-2">
-              {type === "cash"
+              {type === "efectivo"
                 ? "Efectivo"
-                : type === "dataphone"
+                : type === "datafono"
                 ? "Datáfono"
                 : type.charAt(0).toUpperCase() + type.slice(1)}
             </label>
@@ -191,7 +187,6 @@ const Home = () => {
         ))}
       </div>
 
-      {/* Totales */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="bg-gray-800 p-4 rounded-lg shadow text-center">
           <p className="text-sm font-semibold text-gray-300">Venta Total</p>
@@ -202,7 +197,7 @@ const Home = () => {
         <div className="bg-gray-800 p-4 rounded-lg shadow text-center">
           <p className="text-sm font-semibold text-gray-300">Venta en Efectivo</p>
           <p className="text-2xl font-bold text-blue-300">
-            ${sales.cash || 0}
+            ${sales.efectivo || 0}
           </p>
         </div>
         <div className="bg-gray-800 p-4 rounded-lg shadow text-center">
